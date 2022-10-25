@@ -20,13 +20,13 @@ export const H3 = styled.h3`
   color: #e89242ff;
 `;
 export const Dimension = styled.span`
-  color: #82491eff;
+  color: #8249ff;
 `;
 export const H4D = styled.h4`
-  color: #526e2dff;
+  color: #f00429;
 `;
 export const H4R = styled.h4`
-  color: #24325fff;
+  color: #24dd33;
 `;
 export const Residents = styled.span`
   color: #a6eee6ff;

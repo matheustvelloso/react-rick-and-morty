@@ -20,14 +20,14 @@ export const H3 = styled.h3`
   color: #e762d7ff;
 `;
 export const AirDate = styled.span`
-  color: #526e2dff;
+  color: #f00429;
 `;
 export const H4AD = styled.h4`
-  color: #82491eff;
+  color: #8249ff;
 `;
 export const H4C = styled.h4`
   color: #a6eee6ff;
 `;
 export const Characters = styled.span`
-  color: #24325fff;
+  color: #24dd33;
 `;

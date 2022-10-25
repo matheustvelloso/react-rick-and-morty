@@ -1,11 +1,14 @@
 import { memo, useCallback, useEffect, useState } from 'react';
 
-import { Col, Container, Pagination, Row, Spinner } from 'react-bootstrap';
+import { Col, Container, Row, Spinner } from 'react-bootstrap';
 
 import Banner from 'components/Banner';
 import CharacterCard from 'components/CharacterCard';
 import Footer from 'components/Footer';
 import Header from 'components/Header';
+import Paginate from 'components/Paginate';
+
+import useTitle from 'hooks/useTitle';
 
 import { CharacterType } from 'types/characterType';
 
@@ -15,7 +18,9 @@ const Home: React.FC = () => {
   const [pages, setPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
 
-  const fetchCharachters = useCallback(async (page: number) => {
+  const setTitle = useTitle();
+
+  const fetchCharacters = useCallback(async (page: number) => {
     const response = await fetch(
       `https://rickandmortyapi.com/api/character?page=${page}`,
     ).then((r) => r.json());
@@ -27,16 +32,10 @@ const Home: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    fetchCharachters(1);
+    fetchCharacters(1);
+    setTitle();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const handlePageChange = useCallback(
-    (page: number) => {
-      fetchCharachters(page);
-    },
-    [fetchCharachters],
-  );
 
   return (
     <>
@@ -45,7 +44,7 @@ const Home: React.FC = () => {
       <main className="bg-dark pb-1">
         <Container>
           {isLoading && (
-            <div className="text-center">
+            <div className="text-center my-3">
               <Spinner animation="grow" variant="warning" />
             </div>
           )}
@@ -60,19 +59,11 @@ const Home: React.FC = () => {
               </Row>
 
               {pages > 1 && (
-                <Pagination className="justify-content-center py-4 mb-5 flex-wrap">
-                  {Array(pages)
-                    .fill(null)
-                    .map((_, index) => (
-                      <Pagination.Item
-                        key={index} // eslint-disable-line react/no-array-index-key
-                        active={currentPage === index + 1}
-                        onClick={() => handlePageChange(index + 1)}
-                      >
-                        {index + 1}
-                      </Pagination.Item>
-                    ))}
-                </Pagination>
+                <Paginate
+                  onPageChange={({ selected }) => fetchCharacters(selected + 1)}
+                  pageCount={pages}
+                  forcePage={currentPage - 1}
+                />
               )}
             </>
           )}

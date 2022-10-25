@@ -1,11 +1,14 @@
 import { memo, useCallback, useEffect, useState } from 'react';
 
-import { Col, Container, Pagination, Row, Spinner } from 'react-bootstrap';
+import { Col, Container, Row, Spinner } from 'react-bootstrap';
 
 import Banner from 'components/Banner';
 import Footer from 'components/Footer';
 import Header from 'components/Header';
 import LocationCard from 'components/LocationCard';
+import Paginate from 'components/Paginate';
+
+import useTitle from 'hooks/useTitle';
 
 import { LocationType } from 'types/locationType';
 
@@ -14,6 +17,8 @@ const Locations: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [pages, setPages] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+
+  const setTitle = useTitle();
 
   const fetchLocations = useCallback(async (page: number) => {
     const response = await fetch(
@@ -28,15 +33,9 @@ const Locations: React.FC = () => {
 
   useEffect(() => {
     fetchLocations(1);
+    setTitle('Locations');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const handlePageChange = useCallback(
-    (page: number) => {
-      fetchLocations(page);
-    },
-    [fetchLocations],
-  );
 
   return (
     <>
@@ -45,7 +44,7 @@ const Locations: React.FC = () => {
       <main className="bg-dark pb-1">
         <Container>
           {isLoading && (
-            <div className="text-center">
+            <div className="text-center my-3">
               <Spinner animation="grow" variant="warning" />
             </div>
           )}
@@ -60,19 +59,11 @@ const Locations: React.FC = () => {
               </Row>
 
               {pages > 1 && (
-                <Pagination className="justify-content-center py-4 mb-5 flex-wrap">
-                  {Array(pages)
-                    .fill(null)
-                    .map((_, index) => (
-                      <Pagination.Item
-                        key={index} // eslint-disable-line react/no-array-index-key
-                        active={currentPage === index + 1}
-                        onClick={() => handlePageChange(index + 1)}
-                      >
-                        {index + 1}
-                      </Pagination.Item>
-                    ))}
-                </Pagination>
+                <Paginate
+                  onPageChange={({ selected }) => fetchLocations(selected + 1)}
+                  pageCount={pages}
+                  forcePage={currentPage - 1}
+                />
               )}
             </>
           )}
