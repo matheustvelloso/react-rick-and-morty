@@ -1,10 +1,11 @@
 import { memo, useCallback, useEffect, useState } from 'react';
 
-import { Col, Container, Row, Spinner } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 
 import Banner from 'components/Banner';
 import Footer from 'components/Footer';
 import Header from 'components/Header';
+import Loader from 'components/Loader';
 import LocationCard from 'components/LocationCard';
 import Paginate from 'components/Paginate';
 
@@ -43,11 +44,7 @@ const Locations: React.FC = () => {
       <Banner />
       <main className="bg-dark pb-1">
         <Container>
-          {isLoading && (
-            <div className="text-center my-3">
-              <Spinner animation="grow" variant="warning" />
-            </div>
-          )}
+          {!isLoading && <Loader />}
           {!isLoading && (
             <>
               <Row className="row-cols-1 row-cols-md-2 py-5">
