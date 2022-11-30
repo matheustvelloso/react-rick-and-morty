@@ -44,7 +44,7 @@ const Locations: React.FC = () => {
       <Banner />
       <main className="bg-dark pb-1">
         <Container>
-          {!isLoading && <Loader />}
+          {isLoading && <Loader />}
           {!isLoading && (
             <>
               <Row className="row-cols-1 row-cols-md-2 py-5">
